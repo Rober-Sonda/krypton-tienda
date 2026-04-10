@@ -1,7 +1,10 @@
 import React from 'react';
+import { useNavigation } from '../context/NavigationContext.tsx';
 import './Hero.css';
 
 const Hero: React.FC = () => {
+  const { navigateTo } = useNavigation();
+  
   return (
     <section className="hero">
       <div className="container hero-content">
@@ -15,7 +18,7 @@ const Hero: React.FC = () => {
           </p>
           <div className="hero-actions">
             <a href="#instalaciones" className="neon-btn secondary" style={{textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center'}}>Ver nuestras instalaciones</a>
-            <button className="neon-btn">Ir a la Tienda</button>
+            <button className="neon-btn" onClick={() => navigateTo('store')}>Ir a la Tienda</button>
           </div>
         </div>
       </div>
