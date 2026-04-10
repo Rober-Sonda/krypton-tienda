@@ -67,6 +67,24 @@ const Navbar: React.FC = () => {
           <a href="#instalaciones" onClick={(e) => handleHashLink(e, '#instalaciones')}>Instalaciones</a>
           <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('store'); setMobileMenuOpen(false); }} className={currentView === 'store' ? 'active' : ''}>Catálogo</a>
           <a href="#custom" onClick={(e) => handleHashLink(e, '#custom')}>Personalizados</a>
+
+          <div className="mobile-only mobile-profile-section">
+            {currentUser ? (
+              <div className="mobile-profile-card">
+                 <img src={currentUser.photoURL || ''} alt="Avatar" className="user-avatar-circle" />
+                 <div className="mobile-profile-info">
+                   <span className="profile-name">{currentUser.displayName}</span>
+                   <button className="mobile-logout-btn" onClick={() => { logout(); setMobileMenuOpen(false); }}>
+                     Cerrar Sesión
+                   </button>
+                 </div>
+              </div>
+            ) : (
+              <button className="neon-btn mobile-login-btn" onClick={() => { loginWithGoogle(); setMobileMenuOpen(false); }}>
+                 <User size={18} /> Iniciar Sesión para comprar
+              </button>
+            )}
+          </div>
         </nav>
 
         <div className="nav-actions">
