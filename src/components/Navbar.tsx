@@ -68,22 +68,6 @@ const Navbar: React.FC = () => {
           <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('store'); setMobileMenuOpen(false); }} className={currentView === 'store' ? 'active' : ''}>Catálogo</a>
           <a href="#custom" onClick={(e) => handleHashLink(e, '#custom')}>Personalizados</a>
 
-          <div className="mobile-only mobile-profile-section">
-            {currentUser ? (
-              <div className="mobile-profile-card">
-                 <div className="mobile-profile-info">
-                   <span className="profile-name">{currentUser.displayName}</span>
-                   <button className="mobile-logout-btn" onClick={() => { logout(); setMobileMenuOpen(false); }}>
-                     Cerrar Sesión
-                   </button>
-                 </div>
-              </div>
-            ) : (
-              <button className="neon-btn mobile-login-btn" onClick={() => { loginWithGoogle(); setMobileMenuOpen(false); }}>
-                 <User size={18} /> Iniciar Sesión para comprar
-              </button>
-            )}
-          </div>
         </nav>
 
         <div className="nav-actions">
@@ -93,7 +77,7 @@ const Navbar: React.FC = () => {
           
           {currentUser ? (
              <div className="profile-menu-wrapper">
-               <button className="nav-action-btn profile-btn desktop-only" onClick={() => setProfileMenuOpen(!profileMenuOpen)} title={`Perfil de ${currentUser.displayName}`}>
+               <button className="nav-action-btn profile-btn" onClick={() => setProfileMenuOpen(!profileMenuOpen)} title={`Perfil de ${currentUser.displayName}`}>
                 {currentUser.photoURL ? (
                   <img src={currentUser.photoURL} alt="Avatar" className="user-avatar" />
                 ) : (
@@ -113,7 +97,7 @@ const Navbar: React.FC = () => {
                )}
              </div>
           ) : (
-             <button className="nav-action-btn profile-btn desktop-only" onClick={loginWithGoogle} title="Iniciar sesión para comprar">
+             <button className="nav-action-btn profile-btn" onClick={loginWithGoogle} title="Iniciar sesión para comprar">
               <User size={22} />
              </button>
           )}
