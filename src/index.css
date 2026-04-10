@@ -148,6 +148,14 @@ a:hover {
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.8), 0 0 2px rgba(255, 255, 255, 1);
 }
 
+.title-krypton {
+  font-family: var(--font-edo);
+  color: var(--text-main);
+  letter-spacing: 3px;
+  text-shadow: 0 0 8px var(--krypton-green-glow);
+  font-weight: normal;
+}
+
 /* Helpers */
 .container {
   width: 100%;

@@ -25,8 +25,8 @@ const TrustedCompanies: React.FC = () => {
     <section className="trusted-companies-section">
       <div className="trusted-header text-center" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <h2 className="section-title" style={{ fontSize: 'clamp(1.5rem, 5vw, 2.5rem)', marginBottom: '0.5rem', lineHeight: 1.2 }}>
-          <span className="text-light">Empresas que Confían en </span>
-          <span className="text-krypton" style={{ fontFamily: 'Edo, sans-serif', letterSpacing: '2px', display: 'inline-block', marginTop: '5px' }}>KRYPTON</span>
+          <span>Empresas que Confían en </span>
+          <span className="title-krypton" style={{ display: 'inline-block', marginTop: '5px' }}>KRYPTON</span>
         </h2>
         <p className="trusted-subtitle" style={{ fontSize: 'clamp(0.9rem, 3vw, 1.1rem)', maxWidth: '600px' }}>Producciones a gran escala con los estándares más altos del mercado</p>
       </div>

@@ -24,8 +24,8 @@ const StoreView: React.FC = () => {
     <div className="store-view-container fade-in">
       <div className="store-header">
         <h1 className="hero-title text-center" style={{fontSize: '3rem'}}>
-          <span className="text-light">Catálogo </span>
-          <span className="text-krypton">KRYPTON</span>
+          <span>Catálogo </span>
+          <span className="title-krypton">KRYPTON</span>
         </h1>
       </div>
       
