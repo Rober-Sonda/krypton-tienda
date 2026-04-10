@@ -1,0 +1,59 @@
+name: Krypton Tienda - Security & SEO Audit
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  security-audit:
+    name: 🛡️ Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm ci
+
+      - name: 🔐 Run Security Audit (NPM)
+        # Ignora advertencias menores, falla sólo si hay vulnerabilidades Altas/Críticas
+        run: npm audit --audit-level=high
+
+  seo-performance-audit:
+    name: 🚀 SEO & Performance Audit (Lighthouse)
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm ci
+
+      - name: 🏗️ Build Production Bundle
+        run: npm run build
+
+      - name: 🎯 Run Lighthouse CI (SEO & Best Practices)
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          # Directorio donde Vite exporta los archivos estáticos listos para producción
+          staticDistDir: './dist'
+          
+          # Habilita un reporte temporal público generado por Google Lighthouse
+          temporaryPublicStorage: true
+          
+          # Puedes definir aserciones aquí si deseas que falle el pipeline si el SEO es menor a 90, ej:
+          # configPath: './lighthouserc.json'
