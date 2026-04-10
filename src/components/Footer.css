@@ -1,6 +1,7 @@
 .footer {
   position: relative;
   background-color: #050505;
+  color: #ffffff;
   margin-top: 5rem;
   padding-top: 2rem;
   border-top: 1px solid rgba(57, 255, 20, 0.1);
@@ -83,7 +84,7 @@
 }
 
 .footer-title {
-  color: var(--text-main);
+  color: #ffffff;
   font-size: 1.2rem;
   margin-bottom: 1.5rem;
   position: relative;

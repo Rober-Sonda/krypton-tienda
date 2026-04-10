@@ -45,7 +45,7 @@
   font-family: var(--font-edo);
   font-size: 2.2rem;
   font-weight: normal;
-  color: var(--text-main);
+  color: var(--title-krypton-color);
   letter-spacing: 3px;
   text-shadow: 0 0 8px var(--krypton-green-glow);
 }
