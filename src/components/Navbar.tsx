@@ -8,6 +8,7 @@ import './Navbar.css';
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const { currentView, navigateTo } = useNavigation();
   const { currentUser, loginWithGoogle, logout } = useAuth();
   const { items, setIsCartOpen } = useCart();
@@ -78,13 +79,26 @@ const Navbar: React.FC = () => {
           </button>
           
           {currentUser ? (
-             <button className="nav-action-btn profile-btn desktop-only" onClick={logout} title={`Sesión iniciada como ${currentUser.displayName}. Click para salir.`}>
-              {currentUser.photoURL ? (
-                <img src={currentUser.photoURL} alt="Avatar" className="user-avatar" />
-              ) : (
-                <LogOut size={22} />
-              )}
-             </button>
+             <div className="profile-menu-wrapper">
+               <button className="nav-action-btn profile-btn desktop-only" onClick={() => setProfileMenuOpen(!profileMenuOpen)} title={`Perfil de ${currentUser.displayName}`}>
+                {currentUser.photoURL ? (
+                  <img src={currentUser.photoURL} alt="Avatar" className="user-avatar" />
+                ) : (
+                  <User size={22} />
+                )}
+               </button>
+               {profileMenuOpen && (
+                 <div className="profile-dropdown glass-panel">
+                   <div className="dropdown-header">
+                     <p className="dropdown-name">{currentUser.displayName}</p>
+                     <p className="dropdown-email">{currentUser.email}</p>
+                   </div>
+                   <button className="dropdown-logout" onClick={() => { logout(); setProfileMenuOpen(false); }}>
+                     <LogOut size={16} /> Cerrar Sesión
+                   </button>
+                 </div>
+               )}
+             </div>
           ) : (
              <button className="nav-action-btn profile-btn desktop-only" onClick={loginWithGoogle} title="Iniciar sesión para comprar">
               <User size={22} />
