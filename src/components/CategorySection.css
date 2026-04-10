@@ -43,12 +43,27 @@
 }
 
 @media (max-width: 768px) {
+  .section-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.8rem;
+  }
+
   .section-title {
-    font-size: 1.8rem;
+    font-size: 2rem;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .section-line {
+    width: 80px;
+    flex-grow: 0;
+    background: var(--krypton-green); /* solid green line on center */
   }
   
   .product-grid {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 1rem;
+    gap: 1.5rem 1rem;
   }
 }

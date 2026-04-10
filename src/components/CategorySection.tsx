@@ -25,12 +25,13 @@ const CategorySection: React.FC<CategorySectionProps> = ({ id, title, items, sho
       </div>
       
       <div className="product-grid">
-        {items.map(item => (
+        {items.map((item) => (
           <ProductCard 
             key={item.id}
-            title={item.title}
-            image={item.image}
-            price={item.price}
+            id={item.id}
+            title={item.title} 
+            image={item.image} 
+            price={item.price} 
           />
         ))}
       </div>

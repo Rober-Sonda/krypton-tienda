@@ -1,14 +1,28 @@
 import React from 'react';
 import { ShoppingCart } from 'lucide-react';
+import { useAuth } from '../context/AuthContext.tsx';
+import { useCart } from '../context/CartContext.tsx';
 import './ProductCard.css';
 
 interface ProductCardProps {
+  id: number;
   title: string;
   image: string;
   price: string;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ title, image, price }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ id, title, image, price }) => {
+  const { currentUser, loginWithGoogle } = useAuth();
+  const { addToCart } = useCart();
+
+  const handleAddToCart = () => {
+    if (!currentUser) {
+      alert("Debes iniciar sesión con Google para añadir productos al carrito.");
+      loginWithGoogle();
+      return;
+    }
+    addToCart({ id, title, image, price });
+  };
   return (
     <div className="product-card glass-panel protected-media">
       <div className="product-image-container">
@@ -22,7 +36,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ title, image, price }) => {
           onContextMenu={(e) => e.preventDefault()}
         />
         <div className="product-overlay">
-          <button className="add-to-cart-btn">
+          <button className="add-to-cart-btn" onClick={handleAddToCart}>
             <ShoppingCart size={20} />
             <span>Añadir</span>
           </button>

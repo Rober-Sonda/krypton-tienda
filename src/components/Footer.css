@@ -135,6 +135,17 @@
 @media (max-width: 768px) {
   .footer-content {
     flex-direction: column;
-    gap: 2rem;
+    align-items: center;
+    text-align: center;
+    gap: 2.5rem;
+  }
+
+  .footer-brand, .footer-links, .contact-info {
+    align-items: center;
+  }
+  
+  .footer-title::after {
+    left: 50%;
+    transform: translateX(-50%);
   }
 }

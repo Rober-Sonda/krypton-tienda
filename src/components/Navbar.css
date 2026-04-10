@@ -44,8 +44,8 @@
 .logo-text {
   font-family: var(--font-edo);
   font-size: 2.2rem;
-  font-weight: normal; /* Edo is already bold and textured */
-  color: #ffffff; /* Typically white matches the logo best regardless of theme, but let's keep text-main just in case */
+  font-weight: normal;
+  color: var(--text-main);
   letter-spacing: 3px;
   text-shadow: 0 0 8px var(--krypton-green-glow);
 }
@@ -150,5 +150,9 @@
   .mobile-btn {
     display: block;
     z-index: 1001;
+  }
+  
+  .desktop-only {
+    display: none !important;
   }
 }
