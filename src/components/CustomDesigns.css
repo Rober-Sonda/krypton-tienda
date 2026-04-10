@@ -1,0 +1,63 @@
+.custom-designs {
+  margin-top: 6rem;
+  margin-bottom: 2rem;
+  scroll-margin-top: 100px;
+}
+
+.custom-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.custom-subtitle {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  margin-top: 1rem;
+}
+
+.custom-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.custom-card {
+  padding: 2.5rem 2rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.2rem;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.custom-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(57, 255, 20, 0.3);
+}
+
+.custom-icon {
+  color: var(--krypton-green);
+  margin-bottom: 0.5rem;
+  filter: drop-shadow(0 0 8px var(--krypton-green-glow));
+}
+
+.custom-card h3 {
+  font-size: 1.4rem;
+  color: var(--text-main);
+}
+
+.custom-card p {
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.cta-card {
+  background: linear-gradient(to bottom, var(--bg-card), rgba(57, 255, 20, 0.05));
+  border: 1px solid rgba(57, 255, 20, 0.2);
+}
+
+.cta-card .neon-btn {
+  margin-top: 1rem;
+}

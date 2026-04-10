@@ -1,0 +1,111 @@
+.product-card {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.product-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6), 0 0 15px var(--krypton-green-glow);
+  border-color: rgba(57, 255, 20, 0.3);
+}
+
+.product-image-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background-color: #111;
+}
+
+.glass-shield {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background: transparent;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.1);
+}
+
+.product-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 20; /* Por encima del escudo de protección para permitir click en el botón */
+}
+
+.product-card:hover .product-overlay {
+  opacity: 1;
+}
+
+.add-to-cart-btn {
+  background-color: var(--krypton-green);
+  color: var(--bg-dark);
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
+  font-family: var(--font-heading);
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  pointer-events: auto; /* IMPORTANTE: permitir clicks sobre el escudo anti-drag */
+}
+
+.product-card:hover .add-to-cart-btn {
+  transform: translateY(0);
+}
+
+.add-to-cart-btn:hover {
+  box-shadow: 0 0 15px var(--bg-dark);
+  background-color: #ffffff;
+}
+
+.product-info {
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.product-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.product-price {
+  font-family: var(--font-heading);
+  color: var(--krypton-green);
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin: 0;
+}

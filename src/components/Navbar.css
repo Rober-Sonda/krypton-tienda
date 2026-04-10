@@ -1,0 +1,154 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  padding: 1.5rem 0;
+  background-color: var(--nav-bg-transparent);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.navbar.scrolled {
+  padding: 1rem 0;
+  background-color: var(--nav-bg-scrolled);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+  box-shadow: 0 4px 30px var(--nav-shadow);
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  text-decoration: none;
+}
+
+.logo-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 0 10px var(--krypton-green-glow);
+}
+
+.logo-text {
+  font-family: var(--font-edo);
+  font-size: 2.2rem;
+  font-weight: normal; /* Edo is already bold and textured */
+  color: #ffffff; /* Typically white matches the logo best regardless of theme, but let's keep text-main just in case */
+  letter-spacing: 3px;
+  text-shadow: 0 0 8px var(--krypton-green-glow);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links a {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+  position: relative;
+  letter-spacing: 1px;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: var(--krypton-green);
+  transition: width 0.3s ease;
+  box-shadow: 0 0 5px var(--krypton-green);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cart-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-btn:hover {
+  color: var(--krypton-green);
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: var(--krypton-green);
+  color: var(--bg-dark);
+  font-size: 0.7rem;
+  font-weight: bold;
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 5px var(--krypton-green);
+}
+
+.mobile-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 250px;
+    height: 100vh;
+    background-color: var(--nav-mobile-bg);
+    backdrop-filter: blur(15px);
+    flex-direction: column;
+    padding-top: 80px;
+    padding-left: 2rem;
+    transition: right 0.3s ease;
+    border-left: 1px solid rgba(57, 255, 20, 0.2);
+  }
+
+  .nav-links.open {
+    right: 0;
+  }
+
+  .mobile-btn {
+    display: block;
+    z-index: 1001;
+  }
+}
