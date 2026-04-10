@@ -71,7 +71,6 @@ const Navbar: React.FC = () => {
           <div className="mobile-only mobile-profile-section">
             {currentUser ? (
               <div className="mobile-profile-card">
-                 <img src={currentUser.photoURL || ''} alt="Avatar" className="user-avatar-circle" />
                  <div className="mobile-profile-info">
                    <span className="profile-name">{currentUser.displayName}</span>
                    <button className="mobile-logout-btn" onClick={() => { logout(); setMobileMenuOpen(false); }}>
