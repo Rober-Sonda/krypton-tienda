@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ShoppingCart, Menu, X, Sun, Moon, LogOut, User } from 'lucide-react';
+import { ShoppingCart, Menu, X, Sun, Moon, LogOut, User } from 'lucide-react';
 import { useNavigation } from '../context/NavigationContext.tsx';
 import { useAuth } from '../context/AuthContext.tsx';
 import { useCart } from '../context/CartContext.tsx';
@@ -88,10 +88,6 @@ const Navbar: React.FC = () => {
         </nav>
 
         <div className="nav-actions">
-          <button className="nav-action-btn search-btn desktop-only" onClick={() => navigateTo('store')} title="Buscar productos">
-            <Search size={22} />
-          </button>
-
           <button className="nav-action-btn theme-toggle-btn" onClick={toggleTheme} title="Cambiar tema">
             {theme === 'dark' ? <Sun size={22} /> : <Moon size={22} />}
           </button>
