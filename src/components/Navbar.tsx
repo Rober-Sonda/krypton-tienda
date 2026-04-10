@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ShoppingCart, Menu, X, Sun, Moon, LogIn, LogOut } from 'lucide-react';
+import { Search, ShoppingCart, Menu, X, Sun, Moon, LogOut, User } from 'lucide-react';
 import { useNavigation } from '../context/NavigationContext.tsx';
 import { useAuth } from '../context/AuthContext.tsx';
 import { useCart } from '../context/CartContext.tsx';
@@ -32,6 +32,19 @@ const Navbar: React.FC = () => {
     document.documentElement.setAttribute('data-theme', newTheme);
   };
 
+  const handleHashLink = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
+    e.preventDefault();
+    if (currentView !== 'home') {
+      navigateTo('home');
+      setTimeout(() => {
+        document.getElementById(hash.replace('#', ''))?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' });
+    }
+    setMobileMenuOpen(false);
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -50,30 +63,35 @@ const Navbar: React.FC = () => {
 
         <nav className={`nav-links ${mobileMenuOpen ? 'open' : ''}`}>
           <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('home'); setMobileMenuOpen(false); }} className={currentView === 'home' ? 'active' : ''}>Inicio</a>
+          <a href="#instalaciones" onClick={(e) => handleHashLink(e, '#instalaciones')}>Instalaciones</a>
           <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('store'); setMobileMenuOpen(false); }} className={currentView === 'store' ? 'active' : ''}>Catálogo</a>
-          <a href="#custom" onClick={() => setMobileMenuOpen(false)}>Personalizados</a>
+          <a href="#custom" onClick={(e) => handleHashLink(e, '#custom')}>Personalizados</a>
         </nav>
 
         <div className="nav-actions">
-          <button className="icon-btn search-btn desktop-only" onClick={() => navigateTo('store')}>
+          <button className="nav-action-btn search-btn desktop-only" onClick={() => navigateTo('store')} title="Buscar productos">
             <Search size={22} />
           </button>
 
-          <button className="theme-toggle-btn cart-btn" onClick={toggleTheme} aria-label="Cambiar tema">
+          <button className="nav-action-btn theme-toggle-btn" onClick={toggleTheme} title="Cambiar tema">
             {theme === 'dark' ? <Sun size={22} /> : <Moon size={22} />}
           </button>
           
           {currentUser ? (
-             <button className="icon-btn profile-btn desktop-only" onClick={logout} title="Cerrar sesión">
-              <LogOut size={22} />
+             <button className="nav-action-btn profile-btn desktop-only" onClick={logout} title={`Sesión iniciada como ${currentUser.displayName}. Click para salir.`}>
+              {currentUser.photoURL ? (
+                <img src={currentUser.photoURL} alt="Avatar" className="user-avatar" />
+              ) : (
+                <LogOut size={22} />
+              )}
              </button>
           ) : (
-             <button className="icon-btn profile-btn desktop-only" onClick={loginWithGoogle} title="Iniciar sesión">
-              <LogIn size={22} />
+             <button className="nav-action-btn profile-btn desktop-only" onClick={loginWithGoogle} title="Iniciar sesión para comprar">
+              <User size={22} />
              </button>
           )}
 
-          <button className="icon-btn cart-btn" onClick={() => setIsCartOpen(true)}>
+          <button className="nav-action-btn cart-toggle-btn" onClick={() => setIsCartOpen(true)} title="Ver carrito">
             <ShoppingCart size={22} />
             <span className="cart-badge">{items.length}</span>
           </button>

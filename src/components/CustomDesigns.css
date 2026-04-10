@@ -5,59 +5,282 @@
 }
 
 .custom-header {
-  text-align: center;
   margin-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .custom-subtitle {
   color: var(--text-muted);
   font-size: 1.1rem;
   margin-top: 1rem;
+  max-width: 600px;
 }
 
-.custom-grid {
+.customizer-layout {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: 350px 1fr;
   gap: 2rem;
+  align-items: start;
 }
 
-.custom-card {
-  padding: 2.5rem 2rem;
+.customizer-controls {
+  padding: 2rem;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 1.2rem;
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  gap: 2rem;
 }
 
-.custom-card:hover {
-  transform: translateY(-5px);
+.customizer-controls h3 {
+  font-family: var(--font-edo);
+  color: var(--krypton-green);
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.5rem;
+}
+
+.mockup-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.mockup-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+
+.mockup-btn:hover {
+  background: rgba(57, 255, 20, 0.1);
   border-color: rgba(57, 255, 20, 0.3);
 }
 
-.custom-icon {
-  color: var(--krypton-green);
-  margin-bottom: 0.5rem;
-  filter: drop-shadow(0 0 8px var(--krypton-green-glow));
+.mockup-btn.active {
+  background: var(--krypton-green);
+  color: var(--bg-dark);
+  border-color: var(--krypton-green);
+  box-shadow: 0 0 10px var(--krypton-green-glow);
 }
 
-.custom-card h3 {
-  font-size: 1.4rem;
-  color: var(--text-main);
+.color-selector {
+  display: flex;
+  gap: 1rem;
 }
 
-.custom-card p {
+.color-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.color-btn:hover {
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.8);
+}
+
+.color-btn.active {
+  border-color: var(--krypton-green);
+  box-shadow: 0 0 12px var(--krypton-green-glow);
+  transform: scale(1.15);
+}
+
+.upload-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.upload-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  width: 100%;
+}
+
+.upload-hint {
+  font-size: 0.85rem;
   color: var(--text-muted);
-  line-height: 1.6;
+  text-align: center;
 }
 
-.cta-card {
-  background: linear-gradient(to bottom, var(--bg-card), rgba(57, 255, 20, 0.05));
-  border: 1px solid rgba(57, 255, 20, 0.2);
+.upload-success {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px dashed var(--krypton-green);
 }
 
-.cta-card .neon-btn {
+.thumbnail {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  background: white;
+  border-radius: 4px;
+}
+
+.refresh-btn {
+  margin-left: auto;
+  color: var(--text-muted);
+}
+
+.refresh-btn:hover {
+  color: #ff4444;
+}
+
+.customizer-checkout {
   margin-top: 1rem;
+}
+
+.whatsapp-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  width: 100%;
+  background-color: #25D366; /* WhatsApp Green */
+  border-color: #25D366;
+  color: white;
+}
+
+.whatsapp-btn:hover {
+  background-color: #1ebe56;
+  border-color: #1ebe56;
+  box-shadow: 0 0 15px rgba(37, 211, 102, 0.5);
+}
+
+.whatsapp-btn:disabled {
+  background-color: transparent;
+  border-color: var(--text-muted);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.warning-text {
+  font-size: 0.85rem;
+  color: #ffaa00;
+  margin-top: 0.8rem;
+  text-align: center;
+}
+
+/* CANVAS & BLEND MODE MAGIC */
+.customizer-preview {
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 500px;
+  background: #ffffff; /* White background is essential for multiply blend mode realism */
+}
+
+.mockup-canvas {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mockup-base {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  z-index: 1;
+}
+
+.empty-canvas-msg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: rgba(0, 0, 0, 0.4);
+  z-index: 2;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.mockup-overlay {
+  position: absolute;
+  z-index: 3;
+  mix-blend-mode: multiply; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-design {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* OVERLAY POSITIONS SPECIFIC TO EACH MOCKUP ASSET */
+.overlay-tshirt {
+  top: 30%;
+  left: 35%;
+  width: 30%;
+  height: 40%;
+}
+
+.overlay-hoodie {
+  top: 35%;
+  left: 35%;
+  width: 30%;
+  height: 35%;
+}
+
+.overlay-mug {
+  top: 30%;
+  left: 25%;
+  width: 50%;
+  height: 50%;
+}
+
+.overlay-hat {
+  top: 20%;
+  left: 35%;
+  width: 30%;
+  height: 25%;
+}
+
+.overlay-thermal {
+  top: 25%;
+  left: 30%;
+  width: 40%;
+  height: 50%;
+}
+
+@media (max-width: 900px) {
+  .customizer-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .customizer-preview {
+    order: -1; /* Mueve el preview visual arriba en móviles */
+    min-height: 300px;
+  }
 }

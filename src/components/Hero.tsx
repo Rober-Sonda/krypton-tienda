@@ -8,7 +8,7 @@ const Hero: React.FC = () => {
         <div className="hero-text text-center">
           <h1 className="hero-title">
             <span className="text-light">Descubre tu</span><br/>
-            <span className="text-krypton animate-pulse-glow">GRAN DEBILIDAD</span>
+            <span className="text-krypton static-white-glow">GRAN DEBILIDAD</span>
           </h1>
           <p className="hero-subtitle">
             Sublimados y estampados épicos. Entra y deléitate con la mejor variedad de diseños de la galaxia.
