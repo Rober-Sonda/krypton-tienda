@@ -4,6 +4,7 @@ import Footer from './components/Footer.tsx';
 import HomeView from './views/HomeView.tsx';
 import StoreView from './views/StoreView.tsx';
 import CartSidebar from './components/CartSidebar.tsx';
+import AuthModal from './components/AuthModal.tsx';
 import { useNavigation } from './context/NavigationContext.tsx';
 import './App.css';
 
@@ -34,6 +35,7 @@ function App() {
       </main>
 
       <Footer />
+      <AuthModal />
     </div>
   );
 }

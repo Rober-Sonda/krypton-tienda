@@ -12,13 +12,12 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ id, title, image, price }) => {
-  const { currentUser, loginWithGoogle } = useAuth();
+  const { currentUser, setShowLoginPrompt } = useAuth();
   const { addToCart } = useCart();
 
   const handleAddToCart = () => {
     if (!currentUser) {
-      alert("Debes iniciar sesión con Google para añadir productos al carrito.");
-      loginWithGoogle();
+      setShowLoginPrompt(true);
       return;
     }
     addToCart({ id, title, image, price });
