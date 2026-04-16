@@ -45,7 +45,7 @@ const HomeView: React.FC = () => {
           items={getProductsByCategory('simpsons')}
         />
       </div>
-
+      
       <Facilities />
     </div>
   );

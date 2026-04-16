@@ -1,7 +1,6 @@
 import React from 'react';
 import { ShoppingCart } from 'lucide-react';
-import { useAuth } from '../context/AuthContext.tsx';
-import { useCart } from '../context/CartContext.tsx';
+import QuickViewModal from './QuickViewModal.tsx';
 import './ProductCard.css';
 
 interface ProductCardProps {
@@ -9,35 +8,38 @@ interface ProductCardProps {
   title: string;
   image: string;
   price: string;
+  mockupBg?: 'black' | 'white';
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ id, title, image, price }) => {
-  const { currentUser, setShowLoginPrompt } = useAuth();
-  const { addToCart } = useCart();
+const ProductCard: React.FC<ProductCardProps> = ({ id, title, image, price, mockupBg }) => {
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
 
-  const handleAddToCart = () => {
-    if (!currentUser) {
-      setShowLoginPrompt(true);
-      return;
-    }
-    addToCart({ id, title, image, price });
+  const handleOpenQuickView = () => {
+    setIsModalOpen(true);
   };
   return (
     <div className="product-card glass-panel protected-media">
       <div className="product-image-container">
         {/* Usamos un div superpuesto transparente para evitar el arrastre y click derecho incluso en dispositivos móviles */}
         <div className="glass-shield"></div>
-        <img 
-          src={image} 
-          alt={title} 
-          className="product-image no-drag"
-          draggable="false"
-          onContextMenu={(e) => e.preventDefault()}
-        />
+        {mockupBg ? (
+          <div className="virtual-mockup-container" style={{ backgroundColor: mockupBg === 'black' ? '#111' : '#fff' }}>
+            <img src="/mockups/mockup-tshirt.png" alt="T-Shirt Mockup" className={`mockup-base ${mockupBg}`} draggable="false" />
+            <img src={image} alt={title} className="mockup-design no-drag" draggable="false" onContextMenu={(e) => e.preventDefault()} />
+          </div>
+        ) : (
+          <img 
+            src={image} 
+            alt={title} 
+            className="product-image no-drag"
+            draggable="false"
+            onContextMenu={(e) => e.preventDefault()}
+          />
+        )}
         <div className="product-overlay">
-          <button className="add-to-cart-btn" onClick={handleAddToCart}>
+          <button className="add-to-cart-btn" onClick={handleOpenQuickView}>
             <ShoppingCart size={20} />
-            <span>Añadir</span>
+            <span>Equipar / Talles</span>
           </button>
         </div>
       </div>
@@ -46,6 +48,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, title, image, price }) =>
         <h3 className="product-title">{title}</h3>
         <p className="product-price">{price}</p>
       </div>
+
+      <QuickViewModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        product={{id, title, image, price, mockupBg}} 
+      />
     </div>
   );
 };

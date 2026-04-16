@@ -7,13 +7,15 @@ export interface CartItem {
   price: string;
   image: string;
   quantity: number;
+  size?: string;
+  cartItemId: string;
 }
 
 interface CartContextType {
   items: CartItem[];
-  addToCart: (product: Omit<CartItem, 'quantity'>) => void;
-  removeFromCart: (id: number) => void;
-  updateQuantity: (id: number, quantity: number) => void;
+  addToCart: (product: Omit<CartItem, 'quantity' | 'cartItemId'>) => void;
+  removeFromCart: (cartItemId: string) => void;
+  updateQuantity: (cartItemId: string, quantity: number) => void;
   cartTotal: number;
   clearCart: () => void;
   isCartOpen: boolean;
@@ -32,30 +34,31 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [items, setItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  const addToCart = (product: Omit<CartItem, 'quantity'>) => {
+  const addToCart = (product: Omit<CartItem, 'quantity' | 'cartItemId'>) => {
     setItems(currentItems => {
-      const existing = currentItems.find(item => item.id === product.id);
+      const generatedCartItemId = `${product.id}-${product.size || 'uni'}`;
+      const existing = currentItems.find(item => item.cartItemId === generatedCartItemId);
       if (existing) {
         return currentItems.map(item => 
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.cartItemId === generatedCartItemId ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
-      return [...currentItems, { ...product, quantity: 1 }];
+      return [...currentItems, { ...product, quantity: 1, cartItemId: generatedCartItemId }];
     });
     setIsCartOpen(true);
   };
 
-  const removeFromCart = (id: number) => {
-    setItems(currentItems => currentItems.filter(item => item.id !== id));
+  const removeFromCart = (cartItemId: string) => {
+    setItems(currentItems => currentItems.filter(item => item.cartItemId !== cartItemId));
   };
 
-  const updateQuantity = (id: number, quantity: number) => {
+  const updateQuantity = (cartItemId: string, quantity: number) => {
     if (quantity <= 0) {
-      removeFromCart(id);
+      removeFromCart(cartItemId);
       return;
     }
     setItems(currentItems => 
-      currentItems.map(item => item.id === id ? { ...item, quantity } : item)
+      currentItems.map(item => item.cartItemId === cartItemId ? { ...item, quantity } : item)
     );
   };
 

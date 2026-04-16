@@ -12,13 +12,24 @@ const CartSidebar: React.FC = () => {
   const [shippingOptions, setShippingOptions] = useState<{id: string, label: string, cost: number}[]>([]);
   const [selectedShipping, setSelectedShipping] = useState<{id: string, label: string, cost: number} | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
+  const [showCheckoutForm, setShowCheckoutForm] = useState(false);
+  
+  // Checkout Form State
+  const [formData, setFormData] = useState({
+    name: '',
+    address: '',
+    city: '',
+    apto: '',
+    notes: ''
+  });
 
-  // Limpiar envíos si el carrito cambia de precio drásticamente (opcional) pero reseteémoslo al cerrar
+  // Limpiar envíos y vistas al cerrar el carrito
   useEffect(() => {
     if(!isCartOpen) {
       setCp('');
       setShippingOptions([]);
       setSelectedShipping(null);
+      setShowCheckoutForm(false);
     }
   }, [isCartOpen]);
 
@@ -74,19 +85,14 @@ const CartSidebar: React.FC = () => {
 
   if (!isCartOpen) return null;
 
-  const handleCheckout = () => {
-    if (!currentUser) {
-      loginWithGoogle();
-      return;
-    }
-
-    if (items.length === 0) return;
+  const handleGenerateWhatsApp = () => {
+    if (!currentUser && !formData.name) return;
 
     let message = `*NUEVO PEDIDO KRYPTON TIENDA*\n\n`;
     message += `Hola, quiero encargar los siguientes diseños:\n\n`;
     
     items.forEach(item => {
-      message += `- ${item.quantity}x ${item.title} ($${item.price} c/u)\n`;
+      message += `- ${item.quantity}x ${item.title} ${item.size ? `[Talle ${item.size}]` : ''} ($${item.price} c/u)\n`;
     });
     
     message += `\n*SUBTOTAL:* $${cartTotal.toFixed(2)}\n`;
@@ -94,9 +100,16 @@ const CartSidebar: React.FC = () => {
       message += `*MÉTODO DE ENVÍO:* ${selectedShipping.label} ${selectedShipping.cost > 0 ? `($${selectedShipping.cost})` : '(Gratis)'}\n`;
     }
     message += `\n*TOTAL FINAL:* $${finalTotal.toFixed(2)}\n\n`;
-    message += `Mi email de registro es: ${currentUser.email}`;
+    
+    message += `*DATOS DEL CLIENTE:*\n`;
+    message += `- Nombre: ${formData.name}\n`;
+    message += `- Email: ${currentUser ? currentUser.email : 'No registrado'}\n`;
     if (selectedShipping && selectedShipping.cost > 0) {
-      message += `\nMi Código Postal es: ${cp}`;
+      message += `- Dirección: ${formData.address} ${formData.apto ? `(Piso/Depto: ${formData.apto})` : ''}\n`;
+      message += `- Ciudad: ${formData.city} (CP: ${cp})\n`;
+    }
+    if (formData.notes) {
+      message += `\n*NOTAS DEL PEDIDO:*\n${formData.notes}\n`;
     }
 
     const encodedMessage = encodeURIComponent(message);
@@ -114,7 +127,11 @@ const CartSidebar: React.FC = () => {
       <div className={`cart-sidebar ${isCartOpen ? 'open' : ''}`}>
         
         <div className="cart-header">
-          <h2><ShoppingBag size={24} /> Tu Carrito</h2>
+          {!showCheckoutForm ? (
+            <h2><ShoppingBag size={24} /> Tu Carrito</h2>
+          ) : (
+            <h2>Checkout Seguro (2/2)</h2>
+          )}
           <button className="close-btn" onClick={() => setIsCartOpen(false)}>
             <X size={24} />
           </button>
@@ -129,94 +146,131 @@ const CartSidebar: React.FC = () => {
           </div>
         )}
 
-        <div className="cart-items">
-          {items.length === 0 ? (
-            <div className="empty-cart">
-              <p>El carrito está vacío. ¡Ve a la tienda a buscar algo épico!</p>
-            </div>
-          ) : (
-            items.map(item => (
-              <div key={item.id} className="cart-item">
-                <img src={item.image} alt={item.title} className="cart-item-image no-drag" />
-                <div className="cart-item-details">
-                  <h4>{item.title}</h4>
-                  <p className="cart-item-price">{item.price}</p>
-                  <div className="quantity-controls">
-                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
-                    <span>{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
-                  </div>
+        {!showCheckoutForm ? (
+          <>
+            <div className="cart-items">
+              {items.length === 0 ? (
+                <div className="empty-cart">
+                  <p>El carrito está vacío. ¡Ve a la tienda a buscar algo épico!</p>
                 </div>
-                <button className="remove-btn" onClick={() => removeFromCart(item.id)}>
-                  <Trash2 size={18} />
-                </button>
-              </div>
-            ))
-          )}
-        </div>
-
-        {items.length > 0 && (
-          <div className="shipping-calculator">
-            <h4>Estimar Envío</h4>
-            <div className="shipping-input-group">
-              <input 
-                type="text" 
-                placeholder="Tu Código Postal (Ej: 6500)" 
-                value={cp} 
-                onChange={(e) => setCp(e.target.value)} 
-                maxLength={8}
-              />
-              <button 
-                className="neon-btn small-btn" 
-                onClick={handleCalculateShipping}
-                disabled={isCalculating}
-              >
-                {isCalculating ? 'Cotizando...' : 'Calcular'}
-              </button>
+              ) : (
+                items.map(item => (
+                  <div key={item.cartItemId} className="cart-item">
+                    <img src={item.image} alt={item.title} className="cart-item-image no-drag" />
+                    <div className="cart-item-details">
+                      <h4>{item.title} {item.size ? `(Talle: ${item.size})` : ''}</h4>
+                      <p className="cart-item-price">{item.price}</p>
+                      <div className="quantity-controls">
+                        <button onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)}>-</button>
+                        <span>{item.quantity}</span>
+                        <button onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}>+</button>
+                      </div>
+                    </div>
+                    <button className="remove-btn" onClick={() => removeFromCart(item.cartItemId)}>
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                ))
+              )}
             </div>
-            
-            {shippingOptions.length > 0 && (
-              <div className="shipping-options-list">
-                {shippingOptions.map(opt => (
-                  <label key={opt.id} className="shipping-option-label">
-                    <input 
-                      type="radio" 
-                      name="shipping_option" 
-                      checked={selectedShipping?.id === opt.id}
-                      onChange={() => setSelectedShipping(opt)}
-                    />
-                    <span className="shipping-opt-text">{opt.label}</span>
-                    <span className="shipping-opt-cost">{opt.cost === 0 ? 'Gratis' : `$${opt.cost}`}</span>
-                  </label>
-                ))}
+
+            {items.length > 0 && (
+              <div className="shipping-calculator">
+                <h4>Estimar Envío</h4>
+                <div className="shipping-input-group">
+                  <input 
+                    type="text" 
+                    placeholder="Tu Código Postal (Ej: 6500)" 
+                    value={cp} 
+                    onChange={(e) => setCp(e.target.value)} 
+                    maxLength={8}
+                  />
+                  <button 
+                    className="neon-btn small-btn" 
+                    onClick={handleCalculateShipping}
+                    disabled={isCalculating}
+                  >
+                    {isCalculating ? 'Cotizando...' : 'Calcular'}
+                  </button>
+                </div>
+                
+                {shippingOptions.length > 0 && (
+                  <div className="shipping-options-list">
+                    {shippingOptions.map(opt => (
+                      <label key={opt.id} className="shipping-option-label">
+                        <input 
+                          type="radio" 
+                          name="shipping_option" 
+                          checked={selectedShipping?.id === opt.id}
+                          onChange={() => setSelectedShipping(opt)}
+                        />
+                        <span className="shipping-opt-text">{opt.label}</span>
+                        <span className="shipping-opt-cost">{opt.cost === 0 ? 'Gratis' : `$${opt.cost}`}</span>
+                      </label>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
+            
+            <div className="cart-footer">
+              <div className="cart-total">
+                <span>Subtotal:</span>
+                <span>${cartTotal.toFixed(2)}</span>
+              </div>
+              {selectedShipping && (
+                <div className="cart-shipping-cost">
+                  <span>Envío:</span>
+                  <span>{selectedShipping.cost === 0 ? 'Gratis' : `$${selectedShipping.cost.toFixed(2)}`}</span>
+                </div>
+              )}
+              <div className="cart-final-total">
+                <span>Total Final:</span>
+                <span>${finalTotal.toFixed(2)}</span>
+              </div>
+              <button 
+                className="neon-btn checkout-btn" 
+                disabled={items.length === 0}
+                onClick={() => {
+                  if(!currentUser) {
+                    loginWithGoogle();
+                    return;
+                  }
+                  setShowCheckoutForm(true);
+                }}
+              >
+                {currentUser ? 'Continuar al Checkout' : 'Inicia Sesión para Comprar'}
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="checkout-form-container">
+            <button className="back-to-cart-btn" onClick={() => setShowCheckoutForm(false)}>
+              ← Volver al carrito
+            </button>
+            <div className="checkout-fast-form">
+              <input type="text" placeholder="Nombre Completo" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
+              <input type="text" placeholder="Ciudad (Ej: 9 de Julio)" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} />
+              <input type="text" placeholder="Dirección (Calle y No.)" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} />
+              <input type="text" placeholder="Piso / Depto (Opcional)" value={formData.apto} onChange={e => setFormData({...formData, apto: e.target.value})} />
+              <textarea placeholder="Notas adicionales del pedido o talle..." value={formData.notes} onChange={e => setFormData({...formData, notes: e.target.value})} rows={3}></textarea>
+            </div>
+            
+            <div className="cart-footer" style={{marginTop: 'auto'}}>
+              <div className="cart-final-total">
+                <span>Total Final:</span>
+                <span>${finalTotal.toFixed(2)}</span>
+              </div>
+              <button 
+                className="neon-btn checkout-btn" 
+                disabled={!formData.name}
+                onClick={handleGenerateWhatsApp}
+              >
+                Enviar Pedido Formulario
+              </button>
+            </div>
           </div>
         )}
-
-        <div className="cart-footer">
-          <div className="cart-total">
-            <span>Subtotal:</span>
-            <span>${cartTotal.toFixed(2)}</span>
-          </div>
-          {selectedShipping && (
-            <div className="cart-shipping-cost">
-              <span>Envío:</span>
-              <span>{selectedShipping.cost === 0 ? 'Gratis' : `$${selectedShipping.cost.toFixed(2)}`}</span>
-            </div>
-          )}
-          <div className="cart-final-total">
-            <span>Total Final:</span>
-            <span>${finalTotal.toFixed(2)}</span>
-          </div>
-          <button 
-            className="neon-btn checkout-btn" 
-            disabled={items.length === 0}
-            onClick={handleCheckout}
-          >
-            {currentUser ? 'Finalizar Pedido por WhatsApp' : 'Inicia Sesión para Comprar'}
-          </button>
-        </div>
       </div>
     </>
   );

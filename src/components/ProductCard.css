@@ -109,3 +109,53 @@
   font-weight: 800;
   margin: 0;
 }
+
+/* CSS Virtual Mockup Engine */
+.virtual-mockup-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.mockup-base {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+/* For black t-shirts, we invert the white mockup and drop brightness so shadows cast naturally */
+.mockup-base.black {
+  filter: invert(1) brightness(0.15) contrast(1.2);
+}
+
+/* For white t-shirts, multiply blends the shirt folds with the design */
+.mockup-base.white {
+  mix-blend-mode: multiply;
+  opacity: 0.85;
+}
+
+.mockup-design {
+  width: 45%;   /* Scale the raw design to fit the chest */
+  height: auto;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  mix-blend-mode: normal; /* The design sits firmly on top of the black base, or under the white multiply base */
+}
+
+.virtual-mockup-container:has(.mockup-base.white) .mockup-design {
+   /* If shirt is white, the design goes UNDER the shirt layers so folds cast over it */
+   z-index: 0; 
+}

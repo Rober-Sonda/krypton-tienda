@@ -293,3 +293,58 @@
   color: var(--krypton-green);
   text-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
 }
+
+/* Fast Checkout Form */
+.checkout-form-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+  background: var(--bg-dark);
+}
+
+.back-to-cart-btn {
+  background: transparent;
+  border: none;
+  color: var(--krypton-green);
+  padding: 1rem 1.5rem;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(57, 255, 20, 0.1);
+  transition: all 0.2s;
+}
+
+.back-to-cart-btn:hover {
+  background: rgba(57, 255, 20, 0.05);
+}
+
+.checkout-fast-form {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.checkout-fast-form input,
+.checkout-fast-form textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 0.8rem;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+}
+
+.checkout-fast-form input:focus,
+.checkout-fast-form textarea:focus {
+  outline: none;
+  border-color: var(--krypton-green);
+  background: rgba(57, 255, 20, 0.02);
+}
+
+.checkout-fast-form textarea {
+  resize: vertical;
+}

@@ -52,9 +52,10 @@ const Navbar: React.FC = () => {
         </a>
 
         <nav className={`nav-links ${mobileMenuOpen ? 'open' : ''}`}>
-          <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('home'); setMobileMenuOpen(false); }} className={currentView === 'home' ? 'active' : ''}>Inicio</a>
-          <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('store'); setMobileMenuOpen(false); }} className={currentView === 'store' ? 'active' : ''}>Catálogo</a>
-          <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('custom'); setMobileMenuOpen(false); }} className={currentView === 'custom' ? 'active' : ''}>Personalizado</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('home'); setMobileMenuOpen(false); window.scrollTo({top: 0, behavior: 'smooth'}); }} className={currentView === 'home' ? 'active' : ''}>Inicio</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('about'); setMobileMenuOpen(false); window.scrollTo({top: 0, behavior: 'smooth'}); }} className={currentView === 'about' ? 'active' : ''}>Nosotros</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('store'); setMobileMenuOpen(false); window.scrollTo({top: 0, behavior: 'smooth'}); }} className={currentView === 'store' ? 'active' : ''}>Catálogo</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('custom'); setMobileMenuOpen(false); window.scrollTo({top: 0, behavior: 'smooth'}); }} className={currentView === 'custom' ? 'active' : ''}>Personalizado</a>
         </nav>
 
         <div className="nav-actions">
