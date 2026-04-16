@@ -69,10 +69,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       if (user) {
-        await fetchProfile(user.uid);
+        fetchProfile(user.uid).catch(err => console.error("Firestore offline o error:", err));
       } else {
         setUserProfile(null);
         setShowProfilePrompt(false);
