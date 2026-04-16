@@ -62,8 +62,6 @@
   font-size: 0.95rem;
   position: relative;
   letter-spacing: 1px;
-  color: var(--text-main);
-  text-decoration: none;
 }
 
 .nav-links a::after {
@@ -209,20 +207,6 @@
 }
 
 @media (max-width: 768px) {
-  .logo-text {
-    font-size: 1.4rem;
-    letter-spacing: 1px;
-  }
-  
-  .nav-actions {
-    gap: 0.2rem;
-  }
-
-  .nav-action-btn {
-    width: 35px;
-    height: 35px;
-  }
-
   .nav-links {
     position: fixed;
     top: 0;
