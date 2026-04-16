@@ -7,6 +7,7 @@ import CustomDesignView from './views/CustomDesignView.tsx';
 import AboutView from './views/AboutView.tsx';
 import CartSidebar from './components/CartSidebar.tsx';
 import AuthModal from './components/AuthModal.tsx';
+import CompleteProfileModal from './components/CompleteProfileModal.tsx';
 import { useNavigation } from './context/NavigationContext.tsx';
 import './App.css';
 
@@ -41,6 +42,7 @@ function App() {
 
       <Footer />
       <AuthModal />
+      <CompleteProfileModal />
     </div>
   );
 }

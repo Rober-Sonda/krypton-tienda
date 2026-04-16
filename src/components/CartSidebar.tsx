@@ -6,22 +6,12 @@ import './CartSidebar.css';
 
 const CartSidebar: React.FC = () => {
   const { items, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, cartTotal, clearCart } = useCart();
-  const { currentUser, loginWithGoogle } = useAuth();
+  const { currentUser, userProfile, loginWithGoogle } = useAuth();
 
   const [cp, setCp] = useState('');
   const [shippingOptions, setShippingOptions] = useState<{id: string, label: string, cost: number}[]>([]);
   const [selectedShipping, setSelectedShipping] = useState<{id: string, label: string, cost: number} | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
-  const [showCheckoutForm, setShowCheckoutForm] = useState(false);
-  
-  // Checkout Form State
-  const [formData, setFormData] = useState({
-    name: '',
-    address: '',
-    city: '',
-    apto: '',
-    notes: ''
-  });
 
   // Limpiar envíos y vistas al cerrar el carrito
   useEffect(() => {
@@ -29,7 +19,6 @@ const CartSidebar: React.FC = () => {
       setCp('');
       setShippingOptions([]);
       setSelectedShipping(null);
-      setShowCheckoutForm(false);
     }
   }, [isCartOpen]);
 
@@ -86,7 +75,7 @@ const CartSidebar: React.FC = () => {
   if (!isCartOpen) return null;
 
   const handleGenerateWhatsApp = () => {
-    if (!currentUser && !formData.name) return;
+    if (!currentUser || !userProfile) return;
 
     let message = `*NUEVO PEDIDO KRYPTON TIENDA*\n\n`;
     message += `Hola, quiero encargar los siguientes diseños:\n\n`;
@@ -102,18 +91,16 @@ const CartSidebar: React.FC = () => {
     message += `\n*TOTAL FINAL:* $${finalTotal.toFixed(2)}\n\n`;
     
     message += `*DATOS DEL CLIENTE:*\n`;
-    message += `- Nombre: ${formData.name}\n`;
-    message += `- Email: ${currentUser ? currentUser.email : 'No registrado'}\n`;
+    message += `- Nombre: ${userProfile.name}\n`;
+    message += `- Teléfono: ${userProfile.phone}\n`;
+    message += `- Email: ${currentUser.email}\n`;
     if (selectedShipping && selectedShipping.cost > 0) {
-      message += `- Dirección: ${formData.address} ${formData.apto ? `(Piso/Depto: ${formData.apto})` : ''}\n`;
-      message += `- Ciudad: ${formData.city} (CP: ${cp})\n`;
-    }
-    if (formData.notes) {
-      message += `\n*NOTAS DEL PEDIDO:*\n${formData.notes}\n`;
+      message += `- Dirección: ${userProfile.address}\n`;
+      message += `- Localidad: ${userProfile.city} (CP: ${userProfile.cp})\n`;
     }
 
     const encodedMessage = encodeURIComponent(message);
-    const whatsappNumber = "5491100000000"; // REPLACE WITH ACTUAL NUMBER LATER
+    const whatsappNumber = "5492317534545"; 
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
     
     window.open(whatsappUrl, '_blank');
@@ -127,11 +114,7 @@ const CartSidebar: React.FC = () => {
       <div className={`cart-sidebar ${isCartOpen ? 'open' : ''}`}>
         
         <div className="cart-header">
-          {!showCheckoutForm ? (
-            <h2><ShoppingBag size={24} /> Tu Carrito</h2>
-          ) : (
-            <h2>Checkout Seguro (2/2)</h2>
-          )}
+          <h2><ShoppingBag size={24} /> Tu Carrito</h2>
           <button className="close-btn" onClick={() => setIsCartOpen(false)}>
             <X size={24} />
           </button>
@@ -146,8 +129,7 @@ const CartSidebar: React.FC = () => {
           </div>
         )}
 
-        {!showCheckoutForm ? (
-          <>
+
             <div className="cart-items">
               {items.length === 0 ? (
                 <div className="empty-cart">
@@ -236,41 +218,16 @@ const CartSidebar: React.FC = () => {
                     loginWithGoogle();
                     return;
                   }
-                  setShowCheckoutForm(true);
+                  if(!userProfile) {
+                     alert("Por favor completa tu perfil en la ventana emergente.");
+                     return;
+                  }
+                  handleGenerateWhatsApp();
                 }}
               >
-                {currentUser ? 'Continuar al Checkout' : 'Inicia Sesión para Comprar'}
+                {currentUser ? 'Finalizar Pedido WhatsApp' : 'Inicia Sesión para Comprar'}
               </button>
             </div>
-          </>
-        ) : (
-          <div className="checkout-form-container">
-            <button className="back-to-cart-btn" onClick={() => setShowCheckoutForm(false)}>
-              ← Volver al carrito
-            </button>
-            <div className="checkout-fast-form">
-              <input type="text" placeholder="Nombre Completo" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
-              <input type="text" placeholder="Ciudad (Ej: 9 de Julio)" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} />
-              <input type="text" placeholder="Dirección (Calle y No.)" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} />
-              <input type="text" placeholder="Piso / Depto (Opcional)" value={formData.apto} onChange={e => setFormData({...formData, apto: e.target.value})} />
-              <textarea placeholder="Notas adicionales del pedido o talle..." value={formData.notes} onChange={e => setFormData({...formData, notes: e.target.value})} rows={3}></textarea>
-            </div>
-            
-            <div className="cart-footer" style={{marginTop: 'auto'}}>
-              <div className="cart-final-total">
-                <span>Total Final:</span>
-                <span>${finalTotal.toFixed(2)}</span>
-              </div>
-              <button 
-                className="neon-btn checkout-btn" 
-                disabled={!formData.name}
-                onClick={handleGenerateWhatsApp}
-              >
-                Enviar Pedido Formulario
-              </button>
-            </div>
-          </div>
-        )}
       </div>
     </>
   );
