@@ -1,6 +1,7 @@
 .hero {
   position: relative;
   min-height: 100vh;
+  min-height: 100svh; /* Fundamental para evitar pantallazo en mobile */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,6 +16,8 @@
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+  transform: translateZ(0); /* Fuerza aceleración por hardware en móviles frenando tearing */
+  -webkit-transform: translateZ(0);
 }
 
 /* Las clases hero-bg y hero-overlay fueron eliminadas y asimiladas por .hero */
