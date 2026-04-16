@@ -17,8 +17,8 @@ const Hero: React.FC = () => {
             Sublimados y estampados épicos. Entra y deléitate con la mejor variedad de diseños de la galaxia.
           </p>
           <div className="hero-actions">
-            <a href="#instalaciones" className="neon-btn secondary" style={{textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center'}}>Ver nuestras instalaciones</a>
-            <button className="neon-btn" onClick={() => navigateTo('store')}>Ir a la Tienda</button>
+            <a href="#instalaciones" className="neon-btn" style={{textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center'}}>Ver Instalaciones</a>
+            <button className="neon-btn primary" onClick={() => navigateTo('store')}>Ir a la Tienda</button>
           </div>
         </div>
       </div>

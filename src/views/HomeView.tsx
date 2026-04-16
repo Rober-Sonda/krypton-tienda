@@ -1,6 +1,6 @@
 import Hero from '../components/Hero.tsx';
 import CategorySection from '../components/CategorySection.tsx';
-import CustomDesigns from '../components/CustomDesigns.tsx';
+
 import Facilities from '../components/Facilities.tsx';
 import TrustedCompanies from '../components/TrustedCompanies.tsx';
 import { getProductsByCategory } from '../data/products.ts';
@@ -10,7 +10,6 @@ const HomeView: React.FC = () => {
     <div className="fade-in">
       <Hero />
       <TrustedCompanies />
-      <CustomDesigns />
       
       <div className="container sections-wrapper">
         <CategorySection 

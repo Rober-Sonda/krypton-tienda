@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext.tsx';
 import { useAuth } from '../context/AuthContext.tsx';
 import { X, Trash2, ShoppingBag, LogIn } from 'lucide-react';
@@ -7,6 +7,70 @@ import './CartSidebar.css';
 const CartSidebar: React.FC = () => {
   const { items, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, cartTotal, clearCart } = useCart();
   const { currentUser, loginWithGoogle } = useAuth();
+
+  const [cp, setCp] = useState('');
+  const [shippingOptions, setShippingOptions] = useState<{id: string, label: string, cost: number}[]>([]);
+  const [selectedShipping, setSelectedShipping] = useState<{id: string, label: string, cost: number} | null>(null);
+  const [isCalculating, setIsCalculating] = useState(false);
+
+  // Limpiar envíos si el carrito cambia de precio drásticamente (opcional) pero reseteémoslo al cerrar
+  useEffect(() => {
+    if(!isCartOpen) {
+      setCp('');
+      setShippingOptions([]);
+      setSelectedShipping(null);
+    }
+  }, [isCartOpen]);
+
+  const finalTotal = cartTotal + (selectedShipping ? selectedShipping.cost : 0);
+
+  const handleCalculateShipping = async () => {
+    if (!cp || cp.trim().length < 4) return;
+    const cleanCp = cp.trim();
+    setIsCalculating(true);
+
+    try {
+      // Connect to our robust Firebase Cloud Function proxy for real-time calculation
+      const response = await fetch(`https://us-central1-krypton-tienda.cloudfunctions.net/calculateShipping?cp=${encodeURIComponent(cleanCp)}`);
+      if (!response.ok) throw new Error('Error al conectar con calculador de envíos');
+      
+      const options = await response.json();
+      setShippingOptions(options);
+      
+      if (options.length > 0) {
+        setSelectedShipping(options[0]);
+      }
+    } catch (error) {
+      console.warn("Backend no disponible (Google Cloud pendiente). Usando calculador Fallback Interno...", error);
+      
+      // Fallback a lógica interna de React (Idéntica a la que corre en el backend)
+      let options = [];
+      if (cleanCp === '6500') {
+        options.push({ id: 'local', label: 'Retiro en Sucursal (9 de Julio)', cost: 0 });
+        options.push({ id: 'moto', label: 'Cadete Motorizado Local', cost: 2000 });
+      } else {
+        const firstDigit = cleanCp.charAt(0);
+        let sucursalCost = 8500;
+        let domicilioCost = 12000;
+        
+        if (['4', '5', '8', '9'].includes(firstDigit)) {
+          sucursalCost = 13500;
+          domicilioCost = 19500;
+        } else {
+          sucursalCost = 9200;
+          domicilioCost = 14500;
+        }
+        
+        options.push({ id: 'andreani_suc', label: 'Envío a Sucursal Andreani (Fallback)', cost: sucursalCost });
+        options.push({ id: 'andreani_dom', label: 'Envío Domicilio Estándar (Fallback)', cost: domicilioCost });
+      }
+      
+      setShippingOptions(options);
+      setSelectedShipping(options[0]);
+    } finally {
+      setIsCalculating(false);
+    }
+  };
 
   if (!isCartOpen) return null;
 
@@ -25,8 +89,15 @@ const CartSidebar: React.FC = () => {
       message += `- ${item.quantity}x ${item.title} ($${item.price} c/u)\n`;
     });
     
-    message += `\n*TOTAL: $${cartTotal.toFixed(2)}*\n\n`;
+    message += `\n*SUBTOTAL:* $${cartTotal.toFixed(2)}\n`;
+    if (selectedShipping) {
+      message += `*MÉTODO DE ENVÍO:* ${selectedShipping.label} ${selectedShipping.cost > 0 ? `($${selectedShipping.cost})` : '(Gratis)'}\n`;
+    }
+    message += `\n*TOTAL FINAL:* $${finalTotal.toFixed(2)}\n\n`;
     message += `Mi email de registro es: ${currentUser.email}`;
+    if (selectedShipping && selectedShipping.cost > 0) {
+      message += `\nMi Código Postal es: ${cp}`;
+    }
 
     const encodedMessage = encodeURIComponent(message);
     const whatsappNumber = "5491100000000"; // REPLACE WITH ACTUAL NUMBER LATER
@@ -84,10 +155,59 @@ const CartSidebar: React.FC = () => {
           )}
         </div>
 
+        {items.length > 0 && (
+          <div className="shipping-calculator">
+            <h4>Estimar Envío</h4>
+            <div className="shipping-input-group">
+              <input 
+                type="text" 
+                placeholder="Tu Código Postal (Ej: 6500)" 
+                value={cp} 
+                onChange={(e) => setCp(e.target.value)} 
+                maxLength={8}
+              />
+              <button 
+                className="neon-btn small-btn" 
+                onClick={handleCalculateShipping}
+                disabled={isCalculating}
+              >
+                {isCalculating ? 'Cotizando...' : 'Calcular'}
+              </button>
+            </div>
+            
+            {shippingOptions.length > 0 && (
+              <div className="shipping-options-list">
+                {shippingOptions.map(opt => (
+                  <label key={opt.id} className="shipping-option-label">
+                    <input 
+                      type="radio" 
+                      name="shipping_option" 
+                      checked={selectedShipping?.id === opt.id}
+                      onChange={() => setSelectedShipping(opt)}
+                    />
+                    <span className="shipping-opt-text">{opt.label}</span>
+                    <span className="shipping-opt-cost">{opt.cost === 0 ? 'Gratis' : `$${opt.cost}`}</span>
+                  </label>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="cart-footer">
           <div className="cart-total">
-            <span>Total:</span>
+            <span>Subtotal:</span>
             <span>${cartTotal.toFixed(2)}</span>
+          </div>
+          {selectedShipping && (
+            <div className="cart-shipping-cost">
+              <span>Envío:</span>
+              <span>{selectedShipping.cost === 0 ? 'Gratis' : `$${selectedShipping.cost.toFixed(2)}`}</span>
+            </div>
+          )}
+          <div className="cart-final-total">
+            <span>Total Final:</span>
+            <span>${finalTotal.toFixed(2)}</span>
           </div>
           <button 
             className="neon-btn checkout-btn" 

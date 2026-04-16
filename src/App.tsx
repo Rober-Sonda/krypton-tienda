@@ -3,6 +3,7 @@ import Navbar from './components/Navbar.tsx';
 import Footer from './components/Footer.tsx';
 import HomeView from './views/HomeView.tsx';
 import StoreView from './views/StoreView.tsx';
+import CustomDesignView from './views/CustomDesignView.tsx';
 import CartSidebar from './components/CartSidebar.tsx';
 import AuthModal from './components/AuthModal.tsx';
 import { useNavigation } from './context/NavigationContext.tsx';
@@ -31,7 +32,9 @@ function App() {
       <CartSidebar />
       
       <main>
-        {currentView === 'home' ? <HomeView /> : <StoreView />}
+        {currentView === 'home' && <HomeView />}
+        {currentView === 'store' && <StoreView />}
+        {currentView === 'custom' && <CustomDesignView />}
       </main>
 
       <Footer />

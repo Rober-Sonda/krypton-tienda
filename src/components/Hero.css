@@ -51,7 +51,7 @@
 }
 
 .hero-title {
-  font-size: 4rem;
+  font-size: 5.5rem;
   line-height: 1.1;
   margin-bottom: 1.5rem;
   text-transform: uppercase;
@@ -84,6 +84,33 @@
   margin-top: 1rem;
 }
 
+.hero-actions .neon-btn {
+  background-color: rgba(10, 10, 10, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  border: 2px solid var(--krypton-green);
+}
+
+.hero-actions .neon-btn:hover {
+  background-color: var(--krypton-green);
+  color: var(--bg-dark);
+  box-shadow: 0 0 20px var(--krypton-green-glow);
+}
+
+.hero-actions .neon-btn.primary {
+  background-color: var(--krypton-green);
+  color: var(--bg-dark);
+  box-shadow: 0 0 15px var(--krypton-green-glow);
+}
+
+.hero-actions .neon-btn.primary:hover {
+  background-color: #ffffff;
+  border-color: #ffffff;
+  color: var(--bg-dark);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+}
+
 .neon-btn.secondary {
   background-color: rgba(255, 255, 255, 0.05);
   border-color: #a0a0a0;
@@ -111,7 +138,7 @@
 @media (max-width: 768px) {
   .hero {
     background-attachment: scroll;
-    background-position: center top;
+    background-position: center;
   }
   
   .hero-text {
@@ -119,13 +146,13 @@
   }
   
   .hero-title {
-    font-size: 2.8rem;
+    font-size: 4rem;
   }
 }
 
 @media (max-width: 480px) {
   .hero-title {
-    font-size: 2.2rem;
+    font-size: 3rem;
   }
   .hero-actions {
     flex-direction: column;

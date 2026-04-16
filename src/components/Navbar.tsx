@@ -33,18 +33,7 @@ const Navbar: React.FC = () => {
     document.documentElement.setAttribute('data-theme', newTheme);
   };
 
-  const handleHashLink = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
-    e.preventDefault();
-    if (currentView !== 'home') {
-      navigateTo('home');
-      setTimeout(() => {
-        document.getElementById(hash.replace('#', ''))?.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    } else {
-      document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' });
-    }
-    setMobileMenuOpen(false);
-  };
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -64,10 +53,8 @@ const Navbar: React.FC = () => {
 
         <nav className={`nav-links ${mobileMenuOpen ? 'open' : ''}`}>
           <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('home'); setMobileMenuOpen(false); }} className={currentView === 'home' ? 'active' : ''}>Inicio</a>
-          <a href="#instalaciones" onClick={(e) => handleHashLink(e, '#instalaciones')}>Instalaciones</a>
           <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('store'); setMobileMenuOpen(false); }} className={currentView === 'store' ? 'active' : ''}>Catálogo</a>
-          <a href="#custom" onClick={(e) => handleHashLink(e, '#custom')}>Personalizados</a>
-
+          <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('custom'); setMobileMenuOpen(false); }} className={currentView === 'custom' ? 'active' : ''}>Personalizado</a>
         </nav>
 
         <div className="nav-actions">

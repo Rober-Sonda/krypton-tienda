@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
 
-type ViewState = 'home' | 'store';
+type ViewState = 'home' | 'store' | 'custom';
 
 interface NavigationContextType {
   currentView: ViewState;

@@ -25,6 +25,11 @@
     <meta name="twitter:description" content="Entra y deléitate con la variedad de diseños sublimados de tus personajes favoritos." />
     <meta name="twitter:image" content="https://krypton-tienda.web.app/hero-definitivo.jpg" />
 
+    <!-- PWA Enablers -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#39ff14" />
+    <link rel="apple-touch-icon" href="/logo1.jpg" />
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,5 +38,16 @@
   <body class="krypton-body">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').then(registration => {
+            console.log('SW PWA registrado correctamente: ', registration.scope);
+          }).catch(err => {
+            console.log('Fallo el registro del SW: ', err);
+          });
+        });
+      }
+    </script>
   </body>
 </html>
