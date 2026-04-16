@@ -138,7 +138,9 @@
 @media (max-width: 768px) {
   .hero {
     background-attachment: scroll;
-    background-position: center;
+    background-position: center, center center;
+    background-size: 100% 100%, 100% auto;
+    background-repeat: no-repeat;
   }
   
   .hero-text {
