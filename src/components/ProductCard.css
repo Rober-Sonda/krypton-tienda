@@ -162,6 +162,21 @@
    z-index: 0; 
 }
 
+/* En dispositivos móviles, Chromium sufre gravemente de "continuous repainting" 
+   (parpadeo de pantalla y borrado de elementos al scrollear) si hay demasiados elementos 
+   usando mix-blend-mode o filtros pesados. Aquí los desactivamos en móvil. */
+@media (max-width: 768px) {
+  .mockup-base.black {
+    filter: none; /* Fallback: la remera se verá sin filtrar (blanca base) temporalmente en móvil o requerirá un asset oscuro dedicado en un futuro */
+    opacity: 0.9;
+  }
+  
+  .mockup-base.white {
+    mix-blend-mode: normal;
+    opacity: 0.95;
+  }
+}
+
 /* =================================================================
    CORRECCIONES PARA DISPOSITIVOS TÁCTILES (móvil / tablet)
    En touch devices no existe :hover, por lo que los botones nunca

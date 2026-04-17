@@ -18,8 +18,6 @@
   background-size: cover;
   background-position: center;
   background-attachment: scroll;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
 }
 
 /* Las clases hero-bg y hero-overlay fueron eliminadas y asimiladas por .hero */
