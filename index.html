@@ -34,6 +34,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Theme Flash Preventer -->
+    <script>
+      (function() {
+        try {
+          var theme = localStorage.getItem('krypton-theme');
+          if (theme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+          } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.body.style.backgroundColor = '#0a0a0a';
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body class="krypton-body">
     <div id="root"></div>
