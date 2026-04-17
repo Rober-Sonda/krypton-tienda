@@ -47,8 +47,8 @@
   justify-content: space-around;
   min-width: 100%;
   gap: 4rem;
-  /* GPU compositing para animación suave en móvil */
-  will-change: transform;
+  /* ATENCION: No usar will-change: transform aqui. Cranquea Chrome Android (GPU Black Screen)
+     porque el contenedor es demasiado ancho para la mem de textura movil */
   animation: scroll-left 40s linear infinite;
 }
 
