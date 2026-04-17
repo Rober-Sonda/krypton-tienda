@@ -1,5 +1,5 @@
 // Service Worker (PWA Enabler) para Krypton Tienda
-const CACHE_NAME = 'krypton-pwa-v4';
+const CACHE_NAME = 'krypton-pwa-v5';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting(); // Fuerza la activación inmediata del SW

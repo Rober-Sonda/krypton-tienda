@@ -18,7 +18,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, title, image, price, mock
     setIsModalOpen(true);
   };
   return (
-    <div className="product-card glass-panel protected-media">
+    <div className="product-card glass-panel protected-media" onClick={handleOpenQuickView} style={{ cursor: 'pointer' }}>
       <div className="product-image-container">
         {/* Usamos un div superpuesto transparente para evitar el arrastre y click derecho incluso en dispositivos móviles */}
         <div className="glass-shield"></div>
@@ -36,11 +36,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, title, image, price, mock
             onContextMenu={(e) => e.preventDefault()}
           />
         )}
-        <div 
-          className="product-overlay" 
-          onClick={handleOpenQuickView} 
-          style={{ cursor: 'pointer' }}
-        >
+        <div className="product-overlay">
           <button className="add-to-cart-btn" onClick={(e) => { e.stopPropagation(); handleOpenQuickView(); }}>
             <ShoppingCart size={20} />
             <span>Equipar / Talles</span>
@@ -49,13 +45,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, title, image, price, mock
       </div>
       
       <div className="product-info">
-        <h3 className="product-title">{title}</h3>
-        <p className="product-price">{price}</p>
+        <div className="product-text">
+          <h3 className="product-title">{title}</h3>
+          <p className="product-price">{price}</p>
+        </div>
+        <button className="mobile-cart-btn" onClick={(e) => { e.stopPropagation(); handleOpenQuickView(); }}>
+          <ShoppingCart size={20} />
+        </button>
       </div>
 
       <QuickViewModal 
         isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+        onClose={(e) => {
+          if (e && e.stopPropagation) e.stopPropagation();
+          setIsModalOpen(false);
+        }} 
         product={{id, title, image, price, mockupBg}} 
       />
     </div>
