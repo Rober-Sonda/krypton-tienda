@@ -36,8 +36,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, title, image, price, mock
             onContextMenu={(e) => e.preventDefault()}
           />
         )}
-        <div className="product-overlay">
-          <button className="add-to-cart-btn" onClick={handleOpenQuickView}>
+        <div 
+          className="product-overlay" 
+          onClick={handleOpenQuickView} 
+          style={{ cursor: 'pointer' }}
+        >
+          <button className="add-to-cart-btn" onClick={(e) => { e.stopPropagation(); handleOpenQuickView(); }}>
             <ShoppingCart size={20} />
             <span>Equipar / Talles</span>
           </button>

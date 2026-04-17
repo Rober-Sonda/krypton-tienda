@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useNavigation } from '../context/NavigationContext.tsx';
 import { productsData } from '../data/products.ts';
 import ProductCard from '../components/ProductCard.tsx';
 import './StoreView.css';
@@ -13,8 +14,17 @@ const categories = [
 ];
 
 const StoreView: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState<string>('all');
+  const { activeStoreCategory } = useNavigation();
+  const [activeCategory, setActiveCategory] = useState<string>(activeStoreCategory || 'all');
   const [activeSubcategory, setActiveSubcategory] = useState<string>('all');
+
+  // Si cambia el parametro global, actualizar local
+  useEffect(() => {
+    if (activeStoreCategory) {
+      setActiveCategory(activeStoreCategory);
+      setActiveSubcategory('all');
+    }
+  }, [activeStoreCategory]);
 
   const handleCategoryChange = (catId: string) => {
     setActiveCategory(catId);

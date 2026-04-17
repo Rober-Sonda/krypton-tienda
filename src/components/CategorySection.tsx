@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigation } from '../context/NavigationContext.tsx';
 import ProductCard from './ProductCard.tsx';
 import './CategorySection.css';
 
@@ -17,6 +18,8 @@ interface CategorySectionProps {
 }
 
 const CategorySection: React.FC<CategorySectionProps> = ({ id, title, items, shortTitle }) => {
+  const { navigateTo } = useNavigation();
+  
   return (
     <section id={id} className="category-section">
       <div className="section-header">
@@ -37,7 +40,12 @@ const CategorySection: React.FC<CategorySectionProps> = ({ id, title, items, sho
       </div>
       
       <div className="view-more-container">
-        <button className="neon-btn view-more-btn">Ver más de {shortTitle || title.split(' ')[0]}</button>
+        <button 
+          className="neon-btn view-more-btn"
+          onClick={() => navigateTo('store', id)}
+        >
+          Ver más de {shortTitle || title.split(' ')[0]}
+        </button>
       </div>
     </section>
   );

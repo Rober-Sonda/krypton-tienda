@@ -5,7 +5,8 @@ type ViewState = 'home' | 'store' | 'custom' | 'about';
 
 interface NavigationContextType {
   currentView: ViewState;
-  navigateTo: (view: ViewState) => void;
+  navigateTo: (view: ViewState, category?: string) => void;
+  activeStoreCategory: string;
 }
 
 const NavigationContext = createContext<NavigationContextType | undefined>(undefined);
@@ -18,9 +19,13 @@ export const useNavigation = () => {
 
 export const NavigationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [currentView, setCurrentView] = useState<ViewState>('home');
+  const [activeStoreCategory, setActiveStoreCategory] = useState<string>('all');
 
-  const navigateTo = (view: ViewState) => {
+  const navigateTo = (view: ViewState, category?: string) => {
     setCurrentView(view);
+    if (category) {
+      setActiveStoreCategory(category);
+    }
     // scrollTo con behavior:'instant' no está soportado en iOS Safari < 16
     // ni en Android Chrome < 83. Usamos fallback directo.
     try {
@@ -31,7 +36,7 @@ export const NavigationProvider: React.FC<{ children: ReactNode }> = ({ children
   };
 
   return (
-    <NavigationContext.Provider value={{ currentView, navigateTo }}>
+    <NavigationContext.Provider value={{ currentView, navigateTo, activeStoreCategory }}>
       {children}
     </NavigationContext.Provider>
   );
