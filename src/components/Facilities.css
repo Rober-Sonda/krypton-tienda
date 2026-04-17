@@ -118,9 +118,10 @@
   .facility-card.small {
     grid-column: span 1;
     grid-row: span 1;
-    height: 300px;
+    height: 280px;
   }
   
+  /* En touch, el overlay siempre visible */
   .facility-overlay {
     opacity: 1;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.4) 100%);
@@ -129,5 +130,35 @@
   .facility-content {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+/* Explicitamente deshabilitar hover en touchscreens */
+@media (hover: none) and (pointer: coarse) {
+  .facility-overlay {
+    opacity: 1;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 100%);
+  }
+
+  .facility-content {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* No zoom en touch */
+  .facility-card:hover .facility-image {
+    transform: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .facilities-section {
+    padding: 3rem 1rem;
+  }
+
+  .facility-card.large,
+  .facility-card.medium,
+  .facility-card.small {
+    height: 240px;
   }
 }

@@ -7,15 +7,16 @@
   transition: all 0.3s ease;
   padding: 1.5rem 0;
   background-color: var(--nav-bg-transparent);
+  -webkit-backdrop-filter: blur(5px); /* iOS Safari */
   backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  -webkit-tap-highlight-color: transparent; /* Quita destello azul al tocar en Android */
 }
 
 .navbar.scrolled {
   padding: 1rem 0;
   background-color: var(--nav-bg-scrolled);
+  -webkit-backdrop-filter: blur(15px); /* iOS Safari */
   backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
   border-bottom: 1px solid rgba(128, 128, 128, 0.15);
   box-shadow: 0 4px 30px var(--nav-shadow);
 }
@@ -213,6 +214,7 @@
     left: 0;
     width: 100%;
     height: calc(100vh - 70px);
+    height: calc(100dvh - 70px); /* dvh correcto en iOS */
     background-color: var(--bg-dark);
     flex-direction: column;
     padding-top: 2rem;
@@ -225,6 +227,8 @@
     z-index: 999;
     pointer-events: none;
     border-top: 1px solid rgba(57, 255, 20, 0.2);
+    -webkit-overflow-scrolling: touch; /* iOS smooth scroll */
+    overflow-y: auto;
   }
 
   .nav-links.open {

@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/jpeg" href="/logo1.jpg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Viewport fundamental: initial-scale=1 evita zoom en inputs en iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Krypton | Descubre tu gran debilidad</title>
     
     <!-- Meta tags SEO -->
@@ -28,12 +29,21 @@
     <!-- PWA Enablers -->
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#39ff14" />
+    <!-- Apple / iOS: habilita modo standalone y statusbar del color correcto -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Krypton" />
     <link rel="apple-touch-icon" href="/logo1.jpg" />
+    <!-- Android Chrome -->
+    <meta name="mobile-web-app-capable" content="yes" />
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts: preconnect primero, luego la hoja de estilos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+    <!-- display=swap garantiza que el texto es visible mientras carga la fuente -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <!-- Fallback para navegadores que no ejecutan onload en link -->
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"></noscript>
     
     <!-- Theme Flash Preventer -->
     <script>

@@ -30,6 +30,8 @@
   height: 100%;
   z-index: 10;
   background: transparent;
+  /* En móvil, el glass-shield NO debe bloquear eventos de toque */
+  pointer-events: none;
 }
 
 .product-image {
@@ -158,4 +160,44 @@
 .virtual-mockup-container:has(.mockup-base.white) .mockup-design {
    /* If shirt is white, the design goes UNDER the shirt layers so folds cast over it */
    z-index: 0; 
+}
+
+/* =================================================================
+   CORRECCIONES PARA DISPOSITIVOS TÁCTILES (móvil / tablet)
+   En touch devices no existe :hover, por lo que los botones nunca
+   aparecerían. Esta sección los hace siempre visibles en touch.
+   ================================================================= */
+@media (hover: none) and (pointer: coarse) {
+  /* Muestra el overlay siempre en touch (sin necesidad de hover) */
+  .product-overlay {
+    opacity: 1;
+    background: rgba(10, 10, 10, 0.35); /* Más sutil para no tapar la imagen */
+  }
+
+  /* Muestra el botón de agregar siempre visible */
+  .add-to-cart-btn {
+    transform: translateY(0);
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
+
+  /* No scala en hover porque en móvil queda pegado */
+  .product-card:hover .product-image {
+    transform: none;
+  }
+}
+
+/* Breakpoint extra pequeño para teléfonos muy chicos (< 360px) */
+@media (max-width: 360px) {
+  .add-to-cart-btn {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.8rem;
+    gap: 0.3rem;
+  }
+  .product-title {
+    font-size: 0.95rem;
+  }
+  .product-price {
+    font-size: 1rem;
+  }
 }

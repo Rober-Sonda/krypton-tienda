@@ -21,7 +21,13 @@ export const NavigationProvider: React.FC<{ children: ReactNode }> = ({ children
 
   const navigateTo = (view: ViewState) => {
     setCurrentView(view);
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    // scrollTo con behavior:'instant' no está soportado en iOS Safari < 16
+    // ni en Android Chrome < 83. Usamos fallback directo.
+    try {
+      window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+    } catch {
+      window.scrollTo(0, 0);
+    }
   };
 
   return (

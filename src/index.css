@@ -61,7 +61,6 @@
 
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
   width: 100%;
 }
 
@@ -69,7 +68,7 @@ body {
   margin: 0;
   display: flex;
   min-height: 100vh;
-  min-height: 100svh; /* Previene el salto visual en móviles cuando barra URL se encoge */
+  min-height: 100svh;
   width: 100%;
   background-color: var(--bg-dark);
   color: var(--text-main);
@@ -178,4 +177,32 @@ a:hover {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===========================================================
+   CORRECCIONES MOBILE GLOBALES
+   =========================================================== */
+
+/* Deshabilita :hover en dispositivos de toque - evita que los overlays queden
+   pegados al primer toque y no se puedan cerrar */
+@media (hover: none) and (pointer: coarse) {
+  /* En móvil, eliminar animaciones de hover que interfieren con el touch */
+  .neon-btn:hover {
+    transform: none;
+  }
+  
+  /* Asegura que los botones tengan un área de toque suficiente (mín. 44x44px) */
+  button, .neon-btn, a {
+    min-height: 44px;
+  }
+
+  /* Disable momentum-breaking transform on hover for product cards */
+  .product-card:hover {
+    transform: none;
+  }
+}
+
+/* Asegura que los contenedores de sección nunca causan overflow */
+.container {
+  box-sizing: border-box;
 }

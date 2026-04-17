@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { auth, googleProvider } from '../firebase';
-import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
+import { signInWithPopup, signOut, onAuthStateChanged, signInWithRedirect, getRedirectResult } from 'firebase/auth';
 import type { User } from 'firebase/auth';
 
 interface AuthContextType {
@@ -26,6 +26,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
   useEffect(() => {
+    // Detecta si es un dispositivo móvil / touch para usar redirect en lugar de popup
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+      window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+    // Maneja el resultado del redirect de Google (solo en móvil)
+    if (isMobile) {
+      getRedirectResult(auth).then((result) => {
+        if (result?.user) {
+          setCurrentUser(result.user);
+        }
+      }).catch((err) => {
+        console.error('Redirect sign-in error:', err);
+      });
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setLoading(false);
@@ -34,11 +49,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const loginWithGoogle = async () => {
+    // En móvil (iOS/Android), los popups son bloqueados por el navegador.
+    // Usamos redirect en móvil y popup en desktop.
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+      window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    
     try {
-      await signInWithPopup(auth, googleProvider);
+      if (isMobile) {
+        await signInWithRedirect(auth, googleProvider);
+      } else {
+        await signInWithPopup(auth, googleProvider);
+      }
     } catch (error) {
       console.error("Error signing in", error);
-      alert("Hubo un error al iniciar sesión. Asegúrate de que el login de Google está habilitado en tu consola Firebase.");
+      // Fallback: intenta con popup si redirect falla
+      try {
+        await signInWithPopup(auth, googleProvider);
+      } catch {
+        alert("Hubo un error al iniciar sesión. Por favor intenta de nuevo.");
+      }
     }
   };
 

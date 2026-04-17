@@ -3,8 +3,11 @@
   top: 0;
   left: 0;
   width: 100%;
+  /* dvh = dynamic viewport height, correcto en iOS con barra URL */
   height: 100vh;
+  height: 100dvh;
   background: rgba(0, 0, 0, 0.7);
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   z-index: 999;
 }
@@ -17,6 +20,7 @@
   width: 100%;
   max-width: 400px;
   height: 100vh;
+  height: 100dvh; /* Correcto en iOS: excluye barras UI del navegador */
   background: var(--bg-dark);
   border-left: 1px solid var(--krypton-green-glow);
   z-index: 1000;
@@ -78,6 +82,7 @@
 .cart-items {
   flex: 1;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
   padding: 1.5rem;
   display: flex;
   flex-direction: column;

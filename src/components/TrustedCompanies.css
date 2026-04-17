@@ -47,12 +47,16 @@
   justify-content: space-around;
   min-width: 100%;
   gap: 4rem;
-  /* Animación CSS infinita */
+  /* GPU compositing para animación suave en móvil */
+  will-change: transform;
   animation: scroll-left 40s linear infinite;
 }
 
-.marquee-container:hover .marquee-content {
-  animation-play-state: paused;
+/* Solo pausar al hover en dispositivos con mouse (no touch) */
+@media (hover: hover) and (pointer: fine) {
+  .marquee-container:hover .marquee-content {
+    animation-play-state: paused;
+  }
 }
 
 .marquee-item {
