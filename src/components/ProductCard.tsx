@@ -56,10 +56,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, title, image, price, mock
 
       <QuickViewModal 
         isOpen={isModalOpen} 
-        onClose={(e) => {
-          if (e && e.stopPropagation) e.stopPropagation();
-          setIsModalOpen(false);
-        }} 
+        onClose={() => setIsModalOpen(false)} 
         product={{id, title, image, price, mockupBg}} 
       />
     </div>
